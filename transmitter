@@ -1,0 +1,30 @@
+
+#include <SPI.h>
+#include <LoRa.h>
+
+int brake;
+const int transmitting = A0;
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(transmitting, INPUT);
+Serial.begin(9600);
+  while (!Serial);
+  Serial.println("LoRa Sender");
+ 
+  if (!LoRa.begin(433E6)) {
+    Serial.println("Starting LoRa failed!");
+    while (1);
+  }
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+brake = analogRead(transmitting);
+Serial.print(brake);
+LoRa.beginPacket();
+LoRa.print(brake);
+LoRa.endPacket();
+delay(10);
+
+}
